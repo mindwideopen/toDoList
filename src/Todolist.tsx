@@ -1,6 +1,6 @@
 import {FilterValuesType, TaskType} from "./App";
 import {Button} from "./Button";
-import {ChangeEvent, KeyboardEventHandler, useState} from "react";
+import {ChangeEvent,  useState} from "react";
 import React from "react";
 
 type PropsType = {
@@ -9,10 +9,11 @@ type PropsType = {
     removeTask: (taskId: string) => void
     changeFilter: (filter: FilterValuesType) => void
     addTask: (title: string) => void
+	setSaskStatus:(taskID:string, isDone: boolean) => void
 }
 
 
-export const Todolist = ({title, tasks, removeTask, changeFilter, addTask}: PropsType) => {
+export const Todolist = (props: PropsType) => {
 	const [newTaskTitle, setNewTaskTitle] = useState('')
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 
@@ -20,12 +21,17 @@ export const Todolist = ({title, tasks, removeTask, changeFilter, addTask}: Prop
 	}
 
 	const addTaskFunction = () => {
-		addTask(newTaskTitle)
+		if (newTaskTitle.trim()==='') {
+			alert('Enter a title')
+			return
+		}
+		props.addTask(newTaskTitle)
+
 		setNewTaskTitle('')}
 
-	const filterAll = () => changeFilter('all')
-	const filterActive = () => changeFilter('active')
-	const filterCompleted = () => changeFilter('completed')
+	const filterAll = () => props.changeFilter('all')
+	const filterActive = () => props.changeFilter('active')
+	const filterCompleted = () => props.changeFilter('completed')
 
 	const addTaskOnKeyUpHandler = (event: React.KeyboardEvent) => {
 		if (event.key === 'Enter') {
@@ -34,26 +40,30 @@ export const Todolist = ({title, tasks, removeTask, changeFilter, addTask}: Prop
 	}
 
 
-
-
-
 	return (
 		<div>
-			<h3>{title}</h3>
+			<h3>{props.title}</h3>
 			<div>
 				<input value={newTaskTitle}  onChange={onChange} onKeyUp={addTaskOnKeyUpHandler}/>
 
 				<button onClick={addTaskFunction} >+</button>
 			</div>
-			{	tasks.length === 0	? <p>Тасок нет</p> :
+			{	props.tasks.length === 0	? <p>Тасок нет</p> :
 				<ul>
-						{tasks.map(task => {
+						{props.tasks.map(task => {
 
-							const removeHandler = () => removeTask(task.id)
+							const removeHandler = () => props.removeTask(task.id)
+							const changeStatusHandler = (e:ChangeEvent<HTMLInputElement>) => {
+								props.setSaskStatus(task.id, e.currentTarget.checked)
+
+							}
 
 							return (
 								<li key={task.id}>
-									<input type="checkbox" checked={task.isDone}/>
+									<input type="checkbox"
+										   checked={task.isDone}
+										   onChange={changeStatusHandler}/>
+
 									<span>{task.title}</span>
 									<Button title={'x'} onClick={removeHandler}/>
 								</li>

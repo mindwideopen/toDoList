@@ -50,6 +50,16 @@ function App() {
 		}
 		let updatedTasks = [newTask,...tasks]
 		setTasks(updatedTasks)
+	}function changeStatus (taskID:string, isDone: boolean) {
+		let task = tasks.find(t => t.id === taskID)
+// task holds link that leads to
+		if(task) {
+			task.isDone=isDone
+		}
+		let copy = [...tasks]
+		setTasks(copy)
+
+
 	}
 
 	return (
@@ -59,6 +69,7 @@ function App() {
 			          removeTask={removeTask}
 			          changeFilter={changeFilter}
 					  addTask ={addTask}
+					  setSaskStatus={changeStatus}
 			/>
 		</div>
 	);
