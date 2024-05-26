@@ -13,8 +13,8 @@ export type FilterValuesType = 'all' | 'active' | 'completed'
 
 function App() {
 	const [tasks, setTasks] = useState<TaskType[]>([
-		{id: v1(), title: 'HTML&CSS', isDone: true},
-		{id: v1(), title: 'JS', isDone: true},
+		{id: v1(), title: 'HTML&CSS', isDone: false},
+		{id: v1(), title: 'JS', isDone: false},
 		{id: v1(), title: 'ReactJS', isDone: false},
 		{id: v1(), title: 'Redux', isDone: false},
 		{id: v1(), title: 'Typescript', isDone: false},
@@ -24,9 +24,7 @@ function App() {
 	const [filter, setFilter] = useState<FilterValuesType>('all')
 
 	const removeTask = (taskId: string) => {
-		const filteredTasks = tasks.filter((task) => {
-			return task.id !== taskId
-		})
+		const filteredTasks = tasks.filter(task => task.id !== taskId)
 		setTasks(filteredTasks)
 	}
 
@@ -50,12 +48,15 @@ function App() {
 		}
 		let updatedTasks = [newTask,...tasks]
 		setTasks(updatedTasks)
-	}function changeStatus (taskID:string, isDone: boolean) {
+	}
+	function changeStatus (taskID:string, isDone: boolean) {
 		let task = tasks.find(t => t.id === taskID)
 // task holds link that leads to
 		if(task) {
 			task.isDone=isDone
 		}
+		console.log(tasks)
+
 		let copy = [...tasks]
 		setTasks(copy)
 
