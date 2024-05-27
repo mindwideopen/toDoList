@@ -14,20 +14,29 @@ type PropsType = {
 
 
 export const Todolist = (props: PropsType) => {
-	const [newTaskTitle, setNewTaskTitle] = useState('')
+	let [newTaskTitle, setNewTaskTitle] = useState('')
+
+	// const setErrorFalse = () => {
+	// 	setError(false)
+	//
+	// }
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 
 		setNewTaskTitle(e.currentTarget.value)
 	}
+	let [error, setError] = useState<boolean>(false)
 
 	const addTaskFunction = () => {
 		if (newTaskTitle.trim()==='') {
-			alert('Enter a title')
-			return
+			setError(true)
+			}
+		else {
+			props.addTask(newTaskTitle)
+			setNewTaskTitle('')
 		}
-		props.addTask(newTaskTitle)
+		}
 
-		setNewTaskTitle('')}
+
 
 	const filterAll = () => props.changeFilter('all')
 	const filterActive = () => props.changeFilter('active')
@@ -44,9 +53,16 @@ export const Todolist = (props: PropsType) => {
 		<div>
 			<h3>{props.title}</h3>
 			<div>
-				<input value={newTaskTitle}  onChange={onChange} onKeyUp={addTaskOnKeyUpHandler}/>
+				<input value={newTaskTitle}
+					   onChange={onChange}
+					   onKeyUp={addTaskOnKeyUpHandler}
+					   onFocus={()=> setError(false)}
+					   />
+
 
 				<button onClick={addTaskFunction} >+</button>
+
+				{error && <div className="errorTrue">error</div>}
 			</div>
 			{	props.tasks.length === 0	? <p>Тасок нет</p> :
 				<ul>

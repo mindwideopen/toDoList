@@ -6,3 +6,10 @@
 .App > div {
   margin-right: 50px;
 }
+
+.errorTrue {
+  color: red
+}
+ .errorFalse {
+   display: none;
+ }
