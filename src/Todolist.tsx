@@ -53,7 +53,8 @@ export const Todolist = (props: PropsType) => {
 		<div>
 			<h3>{props.title}</h3>
 			<div>
-				<input value={newTaskTitle}
+				<input className={error?'error':undefined}
+					   value={newTaskTitle}
 					   onChange={onChange}
 					   onKeyUp={addTaskOnKeyUpHandler}
 					   onFocus={()=> setError(false)}
@@ -62,7 +63,7 @@ export const Todolist = (props: PropsType) => {
 
 				<button onClick={addTaskFunction} >+</button>
 
-				{error && <div className="errorTrue">error</div>}
+				{error ? <div className="error">error</div>: false}
 			</div>
 			{	props.tasks.length === 0	? <p>Тасок нет</p> :
 				<ul>

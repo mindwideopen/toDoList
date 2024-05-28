@@ -7,9 +7,8 @@
   margin-right: 50px;
 }
 
-.errorTrue {
-  color: red
+.error {
+  color: red;
+    border-color: red
 }
- .errorFalse {
-   display: none;
- }
+
