@@ -14,3 +14,7 @@
 .selected {
   background-color: green;
 }
+
+.active-filter {
+  background-color: red;
+}
