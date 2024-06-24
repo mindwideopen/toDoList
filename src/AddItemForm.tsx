@@ -1,19 +1,19 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {IconButton, TextField} from "@mui/material";
+import {Alert, IconButton, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 
 
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
-
-
-
 }
+
+
+
 
 export function AddItemForm (props: AddItemFormPropsType) {
     const [taskTitle, setTaskTitle] = useState('')
-
+console.log(taskTitle)
     const [error, setError] = useState<string | null>(null)
 
     const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,11 +46,13 @@ export function AddItemForm (props: AddItemFormPropsType) {
                    onChange={changeTaskTitleHandler}
                    onKeyUp={addTaskOnKeyUpHandler}
                    error={!!error}
+
         />
 
 
 
  <IconButton color={'primary'}   onClick={addTaskHandler}><AddIcon/></IconButton>
-        {error && <div className={'error-message'}>{error}</div>}
+        {error && <div className={'error-message'}><Alert  sx={{
+            width: '50%' }} variant={'filled'} severity="error">{error}</Alert></div>}
     </div>
 }

@@ -3,6 +3,7 @@ import {Todolist} from "./Todolist";
 import {useState} from "react";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
+import {Box} from "@mui/material";
 
 export type TaskType = {
     id: string
@@ -62,7 +63,7 @@ function App() {
         }
         setTodolists([newTodolist, ...todolists])
         setTasks({
-            [newTodolist.id]: [{id: v1(), title: 'empty_task', isDone: true}],
+            [newTodolist.id]: [{id: v1(), title: '', isDone: true}],
                 ...tasks
         })
     }
@@ -71,8 +72,8 @@ function App() {
 
     const removeTask = (taskId: string, todolistID: string) => {
 
-        const todolistTasks = tasks[todolistID]
-        tasks[todolistID] = todolistTasks.filter(task => task.id !== taskId)
+        // const todolistTasks = tasks[todolistID]
+        tasks[todolistID] = tasks[todolistID].filter(task => task.id !== taskId)
         setTasks({...tasks})
     }
 
@@ -83,12 +84,13 @@ function App() {
         setTasks({...tasks})
     }
 
+
     const changeFilter = (filter: FilterValuesType, todolistId: string) => {
-        const newTodolists = todolists.map(tl => {
-            return tl.id === todolistId ? {...tl, filter} : tl
-        })
-        setTodolists(newTodolists)
+
+        setTodolists(todolists.map(tl => tl.id===todolistId ? {...tl, filter} : tl))
     }
+
+
 
 
     const changeTaskStatus = (taskID: string, taskStatus: boolean, todolistID: string) => {
@@ -115,11 +117,14 @@ if (changingTask) {
 
 
     return (
+
         <div className="App">
+            <Box bgcolor={'rgba(126, 217,58,0.3)'}  >
             <AddItemForm addItem={ addTodolist}/>
+            </Box>
 
             {todolists.map(tl => {
-                let tasksForTodolist = tasks[tl.id]
+                 let tasksForTodolist = tasks[tl.id]
                 if (tl.filter === 'active') {
                     tasksForTodolist = tasks[tl.id].filter(task => !task.isDone)
                 }
@@ -143,6 +148,7 @@ if (changingTask) {
                     />
                 )
             })}
+
         </div>
     );
 }
