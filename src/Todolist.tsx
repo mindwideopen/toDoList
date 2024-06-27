@@ -5,7 +5,7 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import EditableTitle from "./EditableTitle";
+
 
 
 
@@ -47,10 +47,11 @@ export const Todolist = (props: PropsType) => {
 
     }
 
+
     return (
         <div>
 
-            <h3><EditableTitle title={props.title} callBack={updateTodoListTitleHandler}/> <IconButton onClick={removeTodoList}>
+            <h3><EditableSpan oldTitle={props.title} callBack={updateTodoListTitleHandler}/> <IconButton onClick={removeTodoList}>
                 <Delete/>
 
             </IconButton></h3>

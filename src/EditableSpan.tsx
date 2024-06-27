@@ -14,9 +14,6 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
 
 
 
-
-
-
     const editHandler = () => {
         setEditMode(!editMode)
         if (editMode) {
