@@ -33,6 +33,7 @@ function App() {
         {id: todolistID2, title: 'What to buy', filter: 'all'},
     ])
 
+
     let [tasks, setTasks] = useState<TaskStateType>({
         [todolistID1]: [
             {id:v1() , title: 'HTML&CSS', isDone: true},
@@ -47,15 +48,12 @@ function App() {
 
     const removeToDoList = (todolistID: string) => {
 
-        let filteredTodolists = todolists.filter(tl => tl.id!=todolistID)
-        setTodolists(filteredTodolists)
+        setTodolists (todolists.filter(tl => tl.id !== todolistID ))
         delete tasks[todolistID]
-        setTasks({...tasks})
-
     }
 
     function addTodolist (title:string) {
-        debugger
+
         let newTodolist:TodolistType = {
             id:v1(),
             title: title,
@@ -72,16 +70,15 @@ function App() {
 
     const removeTask = (taskId: string, todolistID: string) => {
 
-        // const todolistTasks = tasks[todolistID]
-        tasks[todolistID] = tasks[todolistID].filter(task => task.id !== taskId)
-        setTasks({...tasks})
+
+         setTasks({...tasks, [todolistID]: tasks[todolistID].filter ( task => task.id!==taskId)})
     }
 
     const addTask = (title: string, todolistID: string) => {
+
         const newTask = {id: v1(), title: title, isDone: false}
 
-        tasks[todolistID] = [newTask, ...tasks[todolistID]]
-        setTasks({...tasks})
+        setTasks({...tasks, [todolistID]: [newTask, ...tasks[todolistID]]})
     }
 
 
@@ -94,22 +91,15 @@ function App() {
 
 
     const changeTaskStatus = (taskID: string, taskStatus: boolean, todolistID: string) => {
-        tasks[todolistID].map(t =>
-            t.id === taskID ? t.isDone = taskStatus : t
-        )
 
-        setTasks({...tasks})
-
+        setTasks({...tasks, [todolistID]: tasks[todolistID].map(task => task.id===taskID ? {...task, isDone:taskStatus} : task)
+    })
     }
 
-    const changeTaskTitle  = (taskID: string, newTaskTitle: string, todolistID: string) => {
-debugger
+    const updateTaskTitle  = ( newTaskTitle: string, taskID: string,  todolistID: string) => {
+        console.log('-----' + newTaskTitle +'-----' + taskID + '-----' + todolistID )
 
-       let changingTask =  tasks[todolistID].find(item => item.id===taskID)
-if (changingTask) {
-    changingTask.title=newTaskTitle
-    setTasks({...tasks})
-}
+        setTasks({...tasks, [todolistID]:tasks[todolistID].map(task => task.id===taskID ? {...task, title: newTaskTitle}: task )})
 
     }
 
@@ -125,13 +115,13 @@ if (changingTask) {
 
             {todolists.map(tl => {
                  let tasksForTodolist = tasks[tl.id]
-                if (tl.filter === 'active') {
-                    tasksForTodolist = tasks[tl.id].filter(task => !task.isDone)
-                }
-
-                if (tl.filter === 'completed') {
-                    tasksForTodolist = tasks[tl.id].filter(task => task.isDone)
-                }
+                // if (tl.filter === 'active') {
+                //     tasksForTodolist = tasks[tl.id].filter(task => !task.isDone)
+                // }
+                //
+                // if (tl.filter === 'completed') {
+                //     tasksForTodolist = tasks[tl.id].filter(task => task.isDone)
+                // }
                 return (
                     <Todolist
                         id={tl.id}
@@ -144,7 +134,7 @@ if (changingTask) {
                         changeTaskStatus={changeTaskStatus}
                         filter={tl.filter}
                         removeTodolist={removeToDoList}
-                        changeTaskTitle={changeTaskTitle}
+                        updateTaskTitle={updateTaskTitle}
                     />
                 )
             })}

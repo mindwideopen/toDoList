@@ -13,7 +13,7 @@ type AddItemFormPropsType = {
 
 export function AddItemForm (props: AddItemFormPropsType) {
     const [taskTitle, setTaskTitle] = useState('')
-console.log(taskTitle)
+
     const [error, setError] = useState<string | null>(null)
 
     const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
