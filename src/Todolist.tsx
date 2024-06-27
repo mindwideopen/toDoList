@@ -5,6 +5,7 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
+import EditableTitle from "./EditableTitle";
 
 
 
@@ -23,6 +24,7 @@ type PropsType = {
     id: string
     removeTodolist: (todolistID: string) => void
     updateTaskTitle: (newTaskTitle: string, taskID: string,  todolistID: string) => void
+    updateTodoListTitle: (newTodolistTitle: string, todolistID: string) => void
 }
 
 export const Todolist = (props: PropsType) => {
@@ -40,11 +42,15 @@ export const Todolist = (props: PropsType) => {
 
         props.addTask(title, props.id)
     }
+    const updateTodoListTitleHandler = (newTodoListTitle: string) => {
+        props.updateTodoListTitle(newTodoListTitle, props.id)
+
+    }
 
     return (
         <div>
 
-            <h3>{props.title} <IconButton onClick={removeTodoList}>
+            <h3><EditableTitle title={props.title} callBack={updateTodoListTitleHandler}/> <IconButton onClick={removeTodoList}>
                 <Delete/>
 
             </IconButton></h3>
@@ -66,9 +72,6 @@ export const Todolist = (props: PropsType) => {
 
                         }).map((task) => {
 
-
-
-
                             const removeTaskHandler = () => {
                                 props.removeTask(task.id, props.id)
                             }
@@ -82,6 +85,7 @@ export const Todolist = (props: PropsType) => {
 
                                 props.updateTaskTitle(newTaskTitle, task.id, props.id )
                             }
+
 
                             return <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                                 <Checkbox checked={task.isDone} onChange={changeTaskStatusHandler}/>
