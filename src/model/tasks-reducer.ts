@@ -1,4 +1,4 @@
-import {TasksStateType, TodolistType} from "../App";
+import {TasksStateType} from "../App";
 import {v1} from "uuid";
 
 export const tasksReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
