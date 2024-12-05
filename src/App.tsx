@@ -1,6 +1,6 @@
 import './App.css';
 import {Todolist} from "./Todolist";
-import React, {useReducer, useState} from "react";
+import React, {useReducer} from "react";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import AppBar from '@mui/material/AppBar';
@@ -22,7 +22,13 @@ import {
     tasksReducer,
     updateTaskAC
 } from "./model/tasks-reducer";
-import {removeTodolistAC, todolistsReducer} from "./model/todolists-reducer";
+import {
+    changeTodolistFilter,
+    changeTodolistTitleAC,
+    removeTodolistAC,
+    todolistsReducer
+} from "./model/todolists-reducer";
+import {changeModeAC, modeReducer} from "./model/mode-reducer";
 
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
@@ -43,7 +49,7 @@ export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
-type ThemeMode = 'dark' | 'light'
+export type ThemeMode = 'dark' | 'light'
 
 function App() {
 
@@ -67,7 +73,7 @@ function App() {
         ],
     })
 
-    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+    const [themeMode, dispatchMode] = useReducer(modeReducer, 'dark')
 
     const theme = createTheme({
         palette: {
@@ -93,10 +99,8 @@ function App() {
     }
 
     const changeFilter = (filter: FilterValuesType, todolistId: string) => {
-        const newTodolists = todolists.map(tl => {
-            return tl.id === todolistId ? {...tl, filter} : tl
-        })
-        alert('перевести на редьюсеры')
+        dispatchTodolists(changeTodolistFilter(todolistId, filter))
+
     }
 
     const removeTodolist = (todolistId: string) => {
@@ -111,12 +115,8 @@ function App() {
 
         const action = addTodolistAC(title)
         dispatchTodolists(action)
-
         dispatchTasks(action)
-        // const todolistId = v1()
-        // const newTodolist: TodolistType = {id: todolistId, title: title, filter: 'all'}
-        // setTodolists([newTodolist, ...todolists])
-        // setTasks({...tasks, [todolistId]: []})
+
     }
 
     const updateTask = (todolistId: string, taskId: string, title: string) => {
@@ -124,12 +124,11 @@ function App() {
     }
 
     const updateTodolist = (todolistId: string, title: string) => {
-        alert('перевести на редьюсеры')
-        alert('перевести на редьюсеры')
+        dispatchTodolists(changeTodolistTitleAC(todolistId, title))
     }
 
     const changeModeHandler = () => {
-        setThemeMode(themeMode === "light" ? "dark" : 'light')
+        dispatchMode(changeModeAC(themeMode))
     }
 
     return (
