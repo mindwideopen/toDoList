@@ -3,15 +3,12 @@ import {v1} from "uuid";
 import {addTodolistACType} from "./tasks-reducer";
 
 
-let todolistID1 = v1()
-let todolistID2 = v1()
 
 const initialState: TodolistType[] = [
-    {id: todolistID1, title: 'What to learn', filter: 'all'},
-    {id: todolistID2, title: 'What to buy', filter: 'all'},
+
 ]
 
-export const todolistsReducer = (state: TodolistType[] = initialState, action: ActionsType) => {
+export const todolistsReducer = (state=initialState, action: ActionsType):Array<TodolistType> => {
     switch (action.type) {
         case 'REMOVE-TODOLIST': {
             return state.filter(tl => tl.id !== action.payload.id)
@@ -32,7 +29,7 @@ export const todolistsReducer = (state: TodolistType[] = initialState, action: A
         }
 
         default:
-            throw new Error("I don't understand this type")
+            return state
     }
 }
 
